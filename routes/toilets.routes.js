@@ -4,7 +4,6 @@ const Toilet = require("../models/Toilet.model");
 //posts/
 router.get("/", (req, res, next) => {
     Toilet.find()
-    .populate("title")
     .then(response => {
         res.json(response);
     })
@@ -13,8 +12,8 @@ router.get("/", (req, res, next) => {
 
 // /posts/new
 router.post("/new", (req, res, next) => {
-    const { title, description } = req.body;
-    Toilet.create({ title, description })
+    const { title, description, rating, imageUrl } = req.body;
+    Toilet.create({ title, description, rating, imageUrl })
     .then(response => {
         res.json({resultado: "ok"});
     })
@@ -22,7 +21,7 @@ router.post("/new", (req, res, next) => {
 });
 
 
-router.put("/edit/:idToilet", (req, res, next) => {
+router.put("/edit/:idToilet", (req, res, next) => {git 
     const { idToilet } = req.params;
     const { title, description } = req.body;
 
@@ -38,8 +37,7 @@ router.put("/edit/:idToilet", (req, res, next) => {
 
 router.get("/:idToilet", (req, res, next) => {
     const {idToilet} = req.params;
-    Project.findById(idToilet)
-    .populate("title")
+    Toilet.findById(idToilet)
     .then(result => {
         console.log("RESULT: ", result);
         res.json(result);
@@ -49,7 +47,7 @@ router.get("/:idToilet", (req, res, next) => {
 
 router.delete("/delete/:idToilet", (req, res, next) => {
     const {idToilet} = req.params;
-    Project.findByIdAndDelete(idToilet)
+    Toilet.findByIdAndDelete(idToilet)
     .then(response => {
         res.json({resultado: "ok"});
     })

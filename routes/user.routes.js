@@ -1,27 +1,33 @@
 // const express = require("express");
 // const router = express.Router();
+// const User = require("../models/user.model");
 
-/* GET home page */
-router.get("/profile", isLoggedIn, (req, res, next) => {
-    let myUserId = req.session.currentUser._id;
-    console.log("**myuser id**=", myUserId);
-    //console.log(req.session.currentUser);
-    //console.log("All information from cookie", req.session.currentUser);
-    User.findById(myUserId)
-      .populate("posts")
-      .populate({
-        path: "posts",
-        populate: {
-          path: "comments",
-          model: "Comment",
-        },
-      })
-      .then((myUserdb) => {
-        console.log("Here is my data", myUserdb);
-        res.render("users/home", { post: myUserdb });
-      })
+
+
+// // GET /user/profile - Retrieves the authenticated user's profile
+// router.get("/profile", isAuthenticated, (req, res, next) => {
+//     const userId = req.payload._id;
+   
+//     User.findById(userId)
+//       .populate("toilets")
+//       .then((foundUser) => {
+//         if (!foundUser) {
+//           res.status(404).json({ message: "User not found." });
+//           return;
+//         }
   
-      .catch((err) => next(err));
-  });
+//           const { _id, email, name, toilets } = foundUser;
+  
+//         const userToilets = toilets.filter((toilet) => toilet.owner.toString() === userId);
+  
+//          const userProfile = { _id, email, name, toilets: userToilets };
+  
+//         res.status(200).json({ user: userProfile });
+//       })
+//       .catch((err) => next(err)); 
+//   });
+  
+
+
 
 // module.exports = router;
