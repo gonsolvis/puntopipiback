@@ -21,7 +21,8 @@ const userSchema = new Schema(
     // imageUrl: {
     //   type: String,
     //   required: [true, "Avatar is required."],
-  // }
+  // },
+    //  posts: [{ type: Schema.Types.ObjectId, ref: "Post" }],
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
