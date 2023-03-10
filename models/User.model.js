@@ -23,9 +23,9 @@ const userSchema = new Schema(
       type: String
     },
 
-    //  toilets: [{ type: Schema.Types.ObjectId, ref: "Toilet" }],
+     toilets: [{ type: Schema.Types.ObjectId, ref: "Toilet" }],
 
-    // favourites
+    //favourites
   },
    
   {
