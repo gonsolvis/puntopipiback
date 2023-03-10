@@ -22,6 +22,11 @@ const userSchema = new Schema(
     imageUrl: {
       type: String
     },
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
+  
 
     toilets: [{ type: Schema.Types.ObjectId, ref: "Toilet" }]
 

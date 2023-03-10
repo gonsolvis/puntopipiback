@@ -3,6 +3,9 @@ const Toilet = require("../models/Toilet.model");
 const Comment = require("../models/Comment.model");
 const fileUploader = require("../config/cloudinary.config");
 
+// Require necessary (isAuthenticated) middleware in order to control access to specific routes
+const { isAuthenticated } = require("../middleware/jwt.middleware.js");
+
 //posts/
 router.get("/", (req, res, next) => {
     Toilet.find()
@@ -84,15 +87,24 @@ router.get("/:idToilet", (req, res, next) => {
       .catch(err => next(err));
   });
 
-
-router.put("/edit/:idToilet", (req, res, next) => {
+  router.put("/edit/:idToilet", isAuthenticated, (req, res, next) => {
     const { idToilet } = req.params;
     const { title, description, rating, imageUrl } = req.body;
+    const userId = req.session.currentUser._id;
 
-    // Project.updateOne({_id: idProject}, {title, description}, {new: true})
-    Toilet.findByIdAndUpdate(idToilet, {title, description, rating, imageUrl}, {new: true})
-    .then(result => {
-        res.json(result);
+    // Check if the current user is the owner of the post
+    Toilet.findOne({_id: idToilet, userId: userId})
+    .then(toilet => {
+        if (!toilet) {
+            return res.status(401).json({ message: "Unauthorized" });
+        }
+
+        // Update the post if the current user is the owner
+        Toilet.findByIdAndUpdate(idToilet, {title, description, rating, imageUrl}, {new: true})
+        .then(result => {
+            res.json(result);
+        })
+        .catch(err => next(err))
     })
     .catch(err => next(err))
 });
