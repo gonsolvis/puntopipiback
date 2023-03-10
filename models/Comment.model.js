@@ -5,6 +5,8 @@ const commentSchema = new Schema(
     creator: { type: Schema.Types.ObjectId, ref: "User" },
     content: String,
     imageUrl: String,
+    toilet: { type: Schema.Types.ObjectId, ref: "Toilet" }
+   
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`

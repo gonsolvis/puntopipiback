@@ -1,11 +1,23 @@
-// const express = require("express");
-// const router = express.Router();
+const express = require("express");
+const router = express.Router();
 // const User = require("../models/user.model");
+const Toilet = require("../models/Toilet.model");
+
+
+router.get("/profile", (req, res, next) => {
+    Toilet.find()
+    .populate("toilets")
+    .then(response => {
+        res.json({resultado: "ok"});
+    })
+    .catch(err => next(err))
+});
 
 
 
-// // GET /user/profile - Retrieves the authenticated user's profile
-// router.get("/profile", isAuthenticated, (req, res, next) => {
+
+// GET /user/profile - Retrieves the authenticated user's profile
+// router.get("/profile", (req, res, next) => {
 //     const userId = req.payload._id;
    
 //     User.findById(userId)

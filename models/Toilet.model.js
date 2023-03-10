@@ -9,7 +9,13 @@ const toiletSchema = new Schema({
           max: 10
         },
     imageUrl: String,
-    // Location: [String}
+    creator: { type: Schema.Types.ObjectId, ref: "User" },
+    comments: [{ type: Schema.Types.ObjectId, ref: "Comment"}]
+ // Location: [Number]
+
+    // OpeningTimes: String,
+
+   
             
         
     
