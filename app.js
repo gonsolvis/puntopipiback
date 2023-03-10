@@ -15,14 +15,17 @@ const app = express();
 require("./config")(app);
 
 // 👇 Start handling routes here
-// const userRoutes = require("./routes/user.routes");
-// app.use("/user", userRoutes);
+const userRoutes = require("./routes/user.routes");
+app.use("/user", userRoutes);
 
 const authRoutes = require("./routes/auth.routes");
 app.use("/auth", authRoutes);
 
 const toiletsRoutes = require("./routes/toilets.routes");
 app.use("/toilets", toiletsRoutes);
+
+const commentRoutes = require("./routes/comment.routes");
+app.use("/comment", commentRoutes);
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
