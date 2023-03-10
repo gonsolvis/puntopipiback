@@ -6,6 +6,7 @@ const Toilet = require("../models/Toilet.model");
 
 router.get("/profile", (req, res, next) => {
     Toilet.find()
+    .populate("toilets")
     .then(response => {
         res.json({resultado: "ok"});
     })

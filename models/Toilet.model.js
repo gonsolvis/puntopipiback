@@ -11,11 +11,11 @@ const toiletSchema = new Schema({
     imageUrl: String,
     creator: { type: Schema.Types.ObjectId, ref: "User" },
     comments: [{ type: Schema.Types.ObjectId, ref: "Comment"}]
-
+ // Location: [Number]
 
     // OpeningTimes: String,
 
-    // Location: [String}
+   
             
         
     
