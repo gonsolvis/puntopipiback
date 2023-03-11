@@ -2,7 +2,9 @@ const router = require("express").Router();
 const Toilet = require("../models/Toilet.model");
 const Comment = require("../models/Comment.model");
 const fileUploader = require("../config/cloudinary.config");
-
+const { isAuthenticated } = require("../middleware/jwt.middleware.js");
+const { isAdmin } = require("../middleware/admin.middleware");
+// const { sameUser } = require("../middleware/sameUser.middleware");
 //posts/
 router.get("/", (req, res, next) => {
     Toilet.find()
@@ -14,14 +16,14 @@ router.get("/", (req, res, next) => {
 });
 
 // /posts/new
-// router.post("/new", (req, res, next) => {
-//     const { title, description, rating, imageUrl } = req.body;
-//     Toilet.create({ title, description, rating, imageUrl })
-//     .then(response => {
-//         res.json({resultado: "ok"});
-//     })
-//     .catch(err => next(err))
-// });
+router.post("/new", (req, res, next) => {
+    const { title, description, rating, imageUrl } = req.body;
+    Toilet.create({ title, description, rating, imageUrl })
+    .then(response => {
+        res.json({resultado: "ok"});
+    })
+    .catch(err => next(err))
+});
 
 // // POST "/api/upload" => Route that receives the image, sends it to Cloudinary via the fileUploader and returns the image URL
 // router.post("/upload", fileUploader.single("imageUrl"), (req, res, next) => {
@@ -37,29 +39,18 @@ router.get("/", (req, res, next) => {
 //   });
 
 
-router.post("/new", fileUploader.single("imageUrl"), (req, res, next) => {
-    const { title, description, rating } = req.body;
+// router.post("/new", isAuthenticated, fileUploader.single("imageUrl"), (req, res, next) => {
+//     const { title, description, rating } = req.body;
     
-    // Extract the image URL from the req.file object
-    const imageUrl = req.file.secure_url;
+//     // Extract the image URL from the req.file object
+//     const imageUrl = req.file.secure_url;
   
-    Toilet.create({ title, description, rating, imageUrl })
-      .then(response => {
-        res.json({ resultado: "ok" });
-      })
-      .catch(err => next(err))
-  });
-
-
-//   router.get("/:idToilet", (req, res, next) => {
-//     const {idToilet} = req.params;
-//     Toilet.findById(idToilet)
-//     .then(result => {
-//         console.log("RESULT: ", result);
-//         res.json(result);
-//     })
-//     .catch(err => next(err))
-// });
+//     Toilet.create({ title, description, rating, imageUrl })
+//       .then(response => {
+//         res.json({ resultado: "ok" });
+//       })
+//       .catch(err => next(err))
+//   });
 
 
 router.get("/:idToilet", (req, res, next) => {
@@ -85,7 +76,7 @@ router.get("/:idToilet", (req, res, next) => {
   });
 
 
-router.put("/edit/:idToilet", (req, res, next) => {
+router.put("/edit/:idToilet", isAdmin, (req, res, next) => {
     const { idToilet } = req.params;
     const { title, description, rating, imageUrl } = req.body;
 
@@ -98,10 +89,7 @@ router.put("/edit/:idToilet", (req, res, next) => {
 });
 
 
-
-
-
-router.delete("/delete/:idToilet", (req, res, next) => {
+router.delete("/delete/:idToilet", isAdmin, (req, res, next) => {
     const {idToilet} = req.params;
     Toilet.findByIdAndDelete(idToilet)
     .then(response => {

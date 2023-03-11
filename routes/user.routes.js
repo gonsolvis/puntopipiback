@@ -1,13 +1,18 @@
 const express = require("express");
 const router = express.Router();
-// const User = require("../models/user.model");
+const User = require("../models/User.model");
 const Toilet = require("../models/Toilet.model");
+const { isAdmin } = require("../middleware/admin.middleware");
+const { isAuthenticated } = require("../middleware/jwt.middleware.js");
+// const { sameUser } = require("../middleware/sameUser.middleware");
 
 
-router.get("/profile", (req, res, next) => {
-    Toilet.find()
+router.get("/profile/:idProfile", isAuthenticated,  (req, res, next) => {
+    const { idProfile } = req.params;
+
+    User.findById(idProfile)
     .populate("toilets")
-    .then(response => {
+     .then(response => {
         res.json({resultado: "ok"});
     })
     .catch(err => next(err))
@@ -15,31 +20,14 @@ router.get("/profile", (req, res, next) => {
 
 
 
-
-// GET /user/profile - Retrieves the authenticated user's profile
 // router.get("/profile", (req, res, next) => {
-//     const userId = req.payload._id;
-   
-//     User.findById(userId)
+//     User.findById(req.user.id)
 //       .populate("toilets")
-//       .then((foundUser) => {
-//         if (!foundUser) {
-//           res.status(404).json({ message: "User not found." });
-//           return;
-//         }
-  
-//           const { _id, email, name, toilets } = foundUser;
-  
-//         const userToilets = toilets.filter((toilet) => toilet.owner.toString() === userId);
-  
-//          const userProfile = { _id, email, name, toilets: userToilets };
-  
-//         res.status(200).json({ user: userProfile });
+//       .then(user => {
+//         res.json({ user });
 //       })
-//       .catch((err) => next(err)); 
+//       .catch(err => next(err));
 //   });
-  
 
 
-
-// module.exports = router;
+module.exports = router;

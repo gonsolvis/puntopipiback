@@ -2,7 +2,8 @@ const router = require("express").Router();
 const Toilet = require("../models/Toilet.model");
 const Comment = require("../models/Comment.model");
 // const fileUploader = require("../config/cloudinary.config");
-
+const { isAuthenticated } = require("../middleware/jwt.middleware.js");
+const { isAdmin } = require("../middleware/admin.middleware.js");
 
 
 
@@ -16,7 +17,7 @@ router.get("/", (req, res, next) => {
 });
 
 //HOW TO POPULATE, THE ID?
-router.post("/new", (req, res, next) => {
+router.post("/new", isAuthenticated,  (req, res, next) => {
     const { content, imageUrl, creator, toilet } = req.body;
     Comment.create({ content, imageUrl, creator, toilet })
     .then(response => {
@@ -24,6 +25,16 @@ router.post("/new", (req, res, next) => {
     })
     .catch(err => next(err))
 });
+
+router.delete("/delete/:idComment", isAdmin, (req, res, next) => {
+    const {idComment} = req.params;
+    Comment.findByIdAndDelete(idComment)
+    .then(response => {
+        res.json({resultado: "ok"});
+    })
+    .catch(err => next(err))
+});
+
 
 
 
