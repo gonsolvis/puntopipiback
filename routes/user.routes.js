@@ -7,7 +7,7 @@ const { isAuthenticated } = require("../middleware/jwt.middleware.js");
 // const { sameUser } = require("../middleware/sameUser.middleware");
 
 
-router.get("/profile/:idProfile", isAuthenticated,  (req, res, next) => {
+router.get("/profile/:idProfile",  (req, res, next) => {
     const { idProfile } = req.params;
 
     User.findById(idProfile)

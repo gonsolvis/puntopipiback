@@ -17,8 +17,8 @@ router.get("/", (req, res, next) => {
 
 // /posts/new
 router.post("/new", (req, res, next) => {
-    const { title, description, rating, imageUrl } = req.body;
-    Toilet.create({ title, description, rating, imageUrl })
+    const { title, description, rating, imageUrl,creator } = req.body;
+    Toilet.create({ title, description, rating, imageUrl,creator})
     .then(response => {
         res.json({resultado: "ok"});
     })
@@ -55,7 +55,7 @@ router.post("/new", (req, res, next) => {
 
 router.get("/:idToilet", (req, res, next) => {
     const { idToilet } = req.params;
-  
+    
     Toilet.findById(idToilet)
       .populate("creator")
       .populate("comments")
@@ -75,8 +75,20 @@ router.get("/:idToilet", (req, res, next) => {
       .catch(err => next(err));
   });
 
+  
+// router.get("/:idToilet", (req, res, next) => {
+//     const { idToilet } = req.params;
+//   Toilet.findById(idToilet)
+//   .then(response => {
+//       return res.json(response)
 
-router.put("/edit/:idToilet", isAdmin, (req, res, next) => {
+//   })
+//   .catch(err => console.log(err))
+// })
+
+
+
+router.put("/edit/:idToilet", (req, res, next) => {
     const { idToilet } = req.params;
     const { title, description, rating, imageUrl } = req.body;
 
@@ -89,7 +101,7 @@ router.put("/edit/:idToilet", isAdmin, (req, res, next) => {
 });
 
 
-router.delete("/delete/:idToilet", isAdmin, (req, res, next) => {
+router.delete("/delete/:idToilet",  (req, res, next) => {
     const {idToilet} = req.params;
     Toilet.findByIdAndDelete(idToilet)
     .then(response => {
