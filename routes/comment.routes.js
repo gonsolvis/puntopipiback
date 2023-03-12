@@ -17,7 +17,7 @@ router.get("/", (req, res, next) => {
 });
 
 //HOW TO POPULATE, THE ID?
-router.post("/new", isAuthenticated,  (req, res, next) => {
+router.post("/new",  (req, res, next) => {
     const { content, imageUrl, creator, toilet } = req.body;
     Comment.create({ content, imageUrl, creator, toilet })
     .then(response => {
@@ -26,7 +26,7 @@ router.post("/new", isAuthenticated,  (req, res, next) => {
     .catch(err => next(err))
 });
 
-router.delete("/delete/:idComment", isAdmin, (req, res, next) => {
+router.delete("/delete/:idComment", (req, res, next) => {
     const {idComment} = req.params;
     Comment.findByIdAndDelete(idComment)
     .then(response => {
