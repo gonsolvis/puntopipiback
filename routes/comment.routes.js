@@ -7,9 +7,10 @@ const { isAdmin } = require("../middleware/admin.middleware.js");
 
 
 
-router.get("/", (req, res, next) => {
-    Comment.find()
-    .populate("creator")
+router.get("/:idToilet", (req, res, next) => {
+    const { idToilet } = req.params;
+    Toilet.findById(idToilet)
+    .populate("comments")
     .then(response => {
         res.json(response);
     })
@@ -21,10 +22,26 @@ router.post("/new",  (req, res, next) => {
     const { content, imageUrl, creator, toilet } = req.body;
     Comment.create({ content, imageUrl, creator, toilet })
     .then(response => {
+       return Toilet.findByIdAndUpdate(toilet, { $push: {comments: response} }, {new: true})
+    })
+    .then((data)=>{
         res.json({resultado: "ok"});
     })
     .catch(err => next(err))
 });
+
+
+// router.post("/new/:idToilet",  (req, res, next) => {
+//     const { idToilet } = req.params;
+//     Toilet.findById(idToilet)
+//     .then ((data) =>{})
+//     const { content, imageUrl, creator, toilet } = req.body;
+//     Comment.create({ content, imageUrl, creator, toilet })
+//     .then(response => {
+//         res.json({resultado: "ok"});
+//     })
+//     .catch(err => next(err))
+// });
 
 router.delete("/delete/:idComment", (req, res, next) => {
     const {idComment} = req.params;
