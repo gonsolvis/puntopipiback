@@ -15,42 +15,34 @@ router.get("/", (req, res, next) => {
     .catch(err => next(err))
 });
 
-// /posts/new
-router.post("/new", (req, res, next) => {
-    const { title, description, rating, imageUrl,creator } = req.body;
-    Toilet.create({ title, description, rating, imageUrl,creator})
-    .then(response => {
-        res.json({resultado: "ok"});
-    })
-    .catch(err => next(err))
+
+
+
+// POST "/api/upload" => Route that receives the image, sends it to Cloudinary via the fileUploader and returns the image URL
+router.post("/upload", fileUploader.single("imageUrl"), (req, res, next) => {
+  // console.log("file is: ", req.file)
+ 
+  if (!req.file) {
+    next(new Error("No file uploaded!"));
+    return;
+  }
+  
+  // Get the URL of the uploaded file and send it as a response.
+  // 'fileUrl' can be any name, just make sure you remember to use the same when accessing it on the frontend
+  
+  res.json({ fileUrl: req.file.path });
 });
 
-// // POST "/api/upload" => Route that receives the image, sends it to Cloudinary via the fileUploader and returns the image URL
-// router.post("/upload", fileUploader.single("imageUrl"), (req, res, next) => {
-//     // console.log("file is: ", req.file)
-//        if (!req.file) {
-//       next(new Error("No file uploaded!"));
-//       return;
-//     }
-//         // Get the URL of the uploaded file and send it as a response.
-//     // 'fileUrl' can be any name, just make sure you remember to use the same when accessing it on the frontend
-    
-//     res.json({ fileUrl: req.file.path });
-//   });
 
-
-// router.post("/new", isAuthenticated, fileUploader.single("imageUrl"), (req, res, next) => {
-//     const { title, description, rating } = req.body;
-    
-//     // Extract the image URL from the req.file object
-//     const imageUrl = req.file.secure_url;
-  
-//     Toilet.create({ title, description, rating, imageUrl })
-//       .then(response => {
-//         res.json({ resultado: "ok" });
-//       })
-//       .catch(err => next(err))
-//   });
+// /posts/new
+router.post("/new", (req, res, next) => {
+  const { title, description, rating, imageUrl,creator } = req.body;
+  Toilet.create({ title, description, rating, imageUrl,creator})
+  .then(response => {
+      res.json({resultado: "ok"});
+  })
+  .catch(err => next(err))
+});
 
 
 router.get("/:idToilet", (req, res, next) => {
@@ -76,15 +68,6 @@ router.get("/:idToilet", (req, res, next) => {
   });
 
   
-// router.get("/:idToilet", (req, res, next) => {
-//     const { idToilet } = req.params;
-//   Toilet.findById(idToilet)
-//   .then(response => {
-//       return res.json(response)
-
-//   })
-//   .catch(err => console.log(err))
-// })
 
 
 

@@ -12,8 +12,8 @@ router.get("/profile/:idProfile",  (req, res, next) => {
 
     User.findById(idProfile)
     .populate("toilets")
-     .then(response => {
-        res.json({resultado: "ok"});
+     .then(result => {
+        res.json({result});
     })
     .catch(err => next(err))
 });
