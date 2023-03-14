@@ -20,14 +20,15 @@ router.get("/profile/:idProfile",  (req, res, next) => {
 
 
 
-// router.get("/profile", (req, res, next) => {
-//     User.findById(req.user.id)
-//       .populate("toilets")
-//       .then(user => {
-//         res.json({ user });
-//       })
-//       .catch(err => next(err));
-//   });
+router.put("/profile/edit/:idProfile",  (req, res, next) => {
+    const { idProfile } = req.params;
+    const { email, name } = req.body;
+    User.findByIdAndUpdate(idProfile, {email, name}, {new: true})
+     .then(result => {
+        res.json({result});
+    })
+    .catch(err => next(err))
+});
 
 
 module.exports = router;
