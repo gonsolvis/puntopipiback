@@ -28,9 +28,6 @@ router.post("/new",  (req, res, next) => {
         res.json(response);
        return Toilet.findByIdAndUpdate(toilet, { $push: {comments: response._id} }, {new: true})
     })
-    .then((data)=>{
-        res.json({resultado: "ok"});
-    })
     .catch(err => next(err))
 });
 

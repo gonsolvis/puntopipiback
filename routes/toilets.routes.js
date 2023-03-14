@@ -38,8 +38,8 @@ router.post("/upload", fileUploader.single("imageUrl"), (req, res, next) => {
 
 // /posts/new
 router.post("/new", (req, res, next) => {
-  const { title, description, rating, imageUrl,creator } = req.body;    
-  Toilet.create({ title, description, rating, imageUrl,creator})
+  const { title, description, rating, imageUrl,creator, timestamp } = req.body;    
+  Toilet.create({ title, description, rating, imageUrl,creator, timestamp})
   .then(response => {
     res.json(response);
     return User.findByIdAndUpdate(creator, { $push: {toilets: response._id} }, {new: true})
