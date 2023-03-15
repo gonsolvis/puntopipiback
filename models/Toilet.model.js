@@ -3,10 +3,8 @@ const { Schema, model } = require("mongoose");
 const toiletSchema = new Schema({
     title: String,
     description: String,
-    address: {
-        type: String,
-        required: true
-    },
+    address: String,
+    
     latitude: {
         type: Number,
     },
