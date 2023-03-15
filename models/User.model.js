@@ -30,7 +30,7 @@ const userSchema = new Schema(
 
     toilets: [{ type: Schema.Types.ObjectId, ref: "Toilet" }]
 
-    // favourites
+    //favourites
   },
    
   {
