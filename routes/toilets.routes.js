@@ -1,6 +1,8 @@
 const router = require("express").Router();
 const Toilet = require("../models/Toilet.model");
 const Comment = require("../models/Comment.model");
+const User = require("../models/User.model");
+
 const fileUploader = require("../config/cloudinary.config");
 const { isAuthenticated } = require("../middleware/jwt.middleware.js");
 const { isAdmin } = require("../middleware/admin.middleware");
@@ -36,13 +38,18 @@ router.post("/upload", fileUploader.single("imageUrl"), (req, res, next) => {
 
 // /posts/new
 router.post("/new", (req, res, next) => {
-  const { title, description, rating, imageUrl,creator } = req.body;
-  Toilet.create({ title, description, rating, imageUrl,creator})
+  const { title, description, rating, imageUrl,creator, timestamp } = req.body;    
+  Toilet.create({ title, description, rating, imageUrl,creator, timestamp})
   .then(response => {
-      res.json({resultado: "ok"});
+    res.json(response);
+    return User.findByIdAndUpdate(creator, { $push: {toilets: response._id} }, {new: true})
+ })
+  .then(response => {
+      console.log(response)
   })
   .catch(err => next(err))
 });
+
 
 
 router.get("/:idToilet", (req, res, next) => {
@@ -74,8 +81,6 @@ router.get("/:idToilet", (req, res, next) => {
 router.put("/edit/:idToilet", (req, res, next) => {
     const { idToilet } = req.params;
     const { title, description, rating, imageUrl } = req.body;
-
-    // Project.updateOne({_id: idProject}, {title, description}, {new: true})
     Toilet.findByIdAndUpdate(idToilet, {title, description, rating, imageUrl}, {new: true})
     .then(result => {
         res.json(result);
