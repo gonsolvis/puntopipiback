@@ -25,10 +25,8 @@ router.post("/new",  (req, res, next) => {
     const { content, imageUrl, creator, toilet } = req.body;
     Comment.create({ content, imageUrl, creator, toilet })
     .then(response => {
-       return Toilet.findByIdAndUpdate(toilet, { $push: {comments: response} }, {new: true})
-    })
-    .then((data)=>{
-        res.json({resultado: "ok"});
+        res.json(response);
+       return Toilet.findByIdAndUpdate(toilet, { $push: {comments: response._id} }, {new: true})
     })
     .catch(err => next(err))
 });
@@ -49,17 +47,6 @@ router.post("/upload", fileUploader.single("imageUrl"), (req, res, next) => {
     res.json({ fileUrl: req.file.path });
   });
 
-// router.post("/new/:idToilet",  (req, res, next) => {
-//     const { idToilet } = req.params;
-//     Toilet.findById(idToilet)
-//     .then ((data) =>{})
-//     const { content, imageUrl, creator, toilet } = req.body;
-//     Comment.create({ content, imageUrl, creator, toilet })
-//     .then(response => {
-//         res.json({resultado: "ok"});
-//     })
-//     .catch(err => next(err))
-// });
 
 router.delete("/delete/:idComment", (req, res, next) => {
     const {idComment} = req.params;
