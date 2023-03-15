@@ -23,7 +23,7 @@ router.get("/profile/:idProfile",  (req, res, next) => {
 router.put("/profile/edit/:idProfile",  (req, res, next) => {
     const { idProfile } = req.params;
     const { email, name } = req.body;
-    User.findByIdAndUpdate(idProfile, {email, name}, {new: true})
+    User.findByIdAndUpdate(idProfile, {email, name, imageUrl}, {new: true})
      .then(result => {
         res.json({result});
     })
