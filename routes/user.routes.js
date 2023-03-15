@@ -12,8 +12,9 @@ router.get("/profile/:idProfile",  (req, res, next) => {
 
     User.findById(idProfile)
     .populate("toilets")
-     .then(result => {
-        res.json({result});
+     .then(result => { 
+        console.log(result)
+        res.json(result);
     })
     .catch(err => next(err))
 });
@@ -22,10 +23,10 @@ router.get("/profile/:idProfile",  (req, res, next) => {
 
 router.put("/profile/edit/:idProfile",  (req, res, next) => {
     const { idProfile } = req.params;
-    const { email, name } = req.body;
+    const { email, name, imageUrl } = req.body;
     User.findByIdAndUpdate(idProfile, {email, name, imageUrl}, {new: true})
      .then(result => {
-        res.json({result});
+        res.json(result);
     })
     .catch(err => next(err))
 });
