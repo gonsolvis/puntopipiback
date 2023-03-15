@@ -31,5 +31,15 @@ router.put("/profile/edit/:idProfile",  (req, res, next) => {
     .catch(err => next(err))
 });
 
+router.delete("/profile/delete/:idToilet",  (req, res, next) => {
+    const {idProfile} = req.params;
+    Toilet.findByIdAndDelete(idProfile)
+    .then(response => {
+        res.json({resultado: "ok"});
+    })
+    .catch(err => next(err))
+});
+
+
 
 module.exports = router;
