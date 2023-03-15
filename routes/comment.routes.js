@@ -21,7 +21,7 @@ router.get("/:idToilet", (req, res, next) => {
 });
 
 //HOW TO POPULATE, THE ID?
-router.post("/new",  (req, res, next) => {
+router.post("/new", isAuthenticated,  (req, res, next) => {
     const { content, imageUrl, creator, toilet } = req.body;
     Comment.create({ content, imageUrl, creator, toilet })
     .then(response => {
@@ -33,7 +33,7 @@ router.post("/new",  (req, res, next) => {
 
 
 // POST "/api/upload" => Route that receives the image, sends it to Cloudinary via the fileUploader and returns the image URL
-router.post("/upload", fileUploader.single("imageUrl"), (req, res, next) => {
+router.post("/upload", isAuthenticated, fileUploader.single("imageUrl"), (req, res, next) => {
     // console.log("file is: ", req.file)
    
     if (!req.file) {
@@ -48,7 +48,7 @@ router.post("/upload", fileUploader.single("imageUrl"), (req, res, next) => {
   });
 
 
-router.delete("/delete/:idComment", (req, res, next) => {
+router.delete("/delete/:idComment", isAdmin, (req, res, next) => {
     const {idComment} = req.params;
     Comment.findByIdAndDelete(idComment)
     .then(response => {
@@ -60,16 +60,6 @@ router.delete("/delete/:idComment", (req, res, next) => {
 
 
 
-// router.post("/", (req, res, next) => {
-//     const { content, imageUrl } = req.body;
-//     Toilet.create({ content, imageUrl })
-//       .then((toilet) => {
-//         return Toilet.findById(toilet._id).populate("creator");
-//       })
-//       .then((toilet) => {
-//         res.json({ resultado: "ok" });
-//       })
-//       .catch((err) => next(err));
-//   });
+
 
 module.exports = router;

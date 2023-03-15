@@ -7,7 +7,7 @@ const { isAuthenticated } = require("../middleware/jwt.middleware.js");
 // const { sameUser } = require("../middleware/sameUser.middleware");
 
 
-router.get("/profile/:idProfile",  (req, res, next) => {
+router.get("/profile/:idProfile", isAuthenticated,  (req, res, next) => {
     const { idProfile } = req.params;
 
     User.findById(idProfile)
@@ -21,7 +21,7 @@ router.get("/profile/:idProfile",  (req, res, next) => {
 
 
 
-router.put("/profile/edit/:idProfile",  (req, res, next) => {
+router.put("/profile/edit/:idProfile", isAuthenticated,  (req, res, next) => {
     const { idProfile } = req.params;
     const { email, name, imageUrl } = req.body;
     User.findByIdAndUpdate(idProfile, {email, name, imageUrl}, {new: true})
@@ -31,7 +31,7 @@ router.put("/profile/edit/:idProfile",  (req, res, next) => {
     .catch(err => next(err))
 });
 
-router.delete("/profile/delete/:idToilet",  (req, res, next) => {
+router.delete("/profile/delete/:idToilet", isAdmin, (req, res, next) => {
     const {idProfile} = req.params;
     Toilet.findByIdAndDelete(idProfile)
     .then(response => {

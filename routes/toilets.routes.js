@@ -21,7 +21,7 @@ router.get("/", (req, res, next) => {
 
 
 // POST "/api/upload" => Route that receives the image, sends it to Cloudinary via the fileUploader and returns the image URL
-router.post("/upload", fileUploader.single("imageUrl"), (req, res, next) => {
+router.post("/upload",isAuthenticated, fileUploader.single("imageUrl"), (req, res, next) => {
   // console.log("file is: ", req.file)
  
   if (!req.file) {
@@ -37,9 +37,9 @@ router.post("/upload", fileUploader.single("imageUrl"), (req, res, next) => {
 
 
 // /posts/new
-router.post("/new", (req, res, next) => {
-  const { title, description, rating, imageUrl,creator, timestamp } = req.body;    
-  Toilet.create({ title, description, rating, imageUrl,creator, timestamp})
+router.post("/new", isAuthenticated, (req, res, next) => {
+  const { title, description, rating, imageUrl,creator, timestamp, clean } = req.body;    
+  Toilet.create({ title, description, rating, imageUrl,creator, timestamp, clean})
   .then(response => {
     res.json(response);
     return User.findByIdAndUpdate(creator, { $push: {toilets: response._id} }, {new: true})
@@ -78,7 +78,7 @@ router.get("/:idToilet", (req, res, next) => {
 
 
 
-router.put("/edit/:idToilet", (req, res, next) => {
+router.put("/edit/:idToilet", isAuthenticated, (req, res, next) => {
     const { idToilet } = req.params;
     const { title, description, rating, imageUrl } = req.body;
     Toilet.findByIdAndUpdate(idToilet, {title, description, rating, imageUrl}, {new: true})
@@ -89,7 +89,7 @@ router.put("/edit/:idToilet", (req, res, next) => {
 });
 
 
-router.delete("/delete/:idToilet",  (req, res, next) => {
+router.delete("/delete/:idToilet", isAuthenticated,  (req, res, next) => {
     const {idToilet} = req.params;
     Toilet.findByIdAndDelete(idToilet)
     .then(response => {
