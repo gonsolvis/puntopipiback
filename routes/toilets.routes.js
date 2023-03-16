@@ -38,8 +38,8 @@ router.post("/upload", fileUploader.single("imageUrl"), (req, res, next) => {
 
 // /posts/new
 router.post("/new",  (req, res, next) => {
-  const { title, description, rating, imageUrl,creator, timestamp, clean } = req.body;    
-  Toilet.create({ title, description, rating, imageUrl,creator, timestamp, clean})
+  const { title, description, rating, imageUrl,creator, timestamp, clean, address, latitude, longitude } = req.body;    
+  Toilet.create({ title, description, rating, imageUrl,creator, timestamp, clean, address, latitude, longitude })
   .then(response => {
     res.json(response);
     return User.findByIdAndUpdate(creator, { $push: {toilets: response._id} }, {new: true})
@@ -81,7 +81,7 @@ router.get("/:idToilet", (req, res, next) => {
 router.put("/edit/:idToilet",  (req, res, next) => {
     const { idToilet } = req.params;
     const { title, description, rating, imageUrl } = req.body;
-    Toilet.findByIdAndUpdate(idToilet, {title, description, rating, imageUrl}, {new: true})
+    Toilet.findByIdAndUpdate(idToilet, {title, description, rating, imageUrl, timestamp, clean}, {new: true})
     .then(result => {
         res.json(result);
     })
