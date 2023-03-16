@@ -37,9 +37,9 @@ router.post("/upload", fileUploader.single("imageUrl"), (req, res, next) => {
 
 
 // /posts/new
-router.post("/new", (req, res, next) => {
-  const { title, description, rating, imageUrl,creator, timestamp } = req.body;    
-  Toilet.create({ title, description, rating, imageUrl,creator, timestamp})
+router.post("/new",  (req, res, next) => {
+  const { title, description, rating, imageUrl,creator, timestamp, clean } = req.body;    
+  Toilet.create({ title, description, rating, imageUrl,creator, timestamp, clean})
   .then(response => {
     res.json(response);
     return User.findByIdAndUpdate(creator, { $push: {toilets: response._id} }, {new: true})
@@ -78,7 +78,7 @@ router.get("/:idToilet", (req, res, next) => {
 
 
 
-router.put("/edit/:idToilet", (req, res, next) => {
+router.put("/edit/:idToilet",  (req, res, next) => {
     const { idToilet } = req.params;
     const { title, description, rating, imageUrl } = req.body;
     Toilet.findByIdAndUpdate(idToilet, {title, description, rating, imageUrl}, {new: true})
