@@ -1,6 +1,5 @@
 const { Schema, model } = require("mongoose");
 
-// TODO: Please make sure you edit the User model to whatever makes sense in this case
 const userSchema = new Schema(
   {
     email: {
@@ -17,14 +16,24 @@ const userSchema = new Schema(
     name: {
       type: String,
       required: [true, "Name is required."],
-    }
-    // imageUrl: {
-    //   type: String,
-    //   required: [true, "Avatar is required."],
-  // }
+      minlength: 2,
+      maxlength: 50
+    },
+    imageUrl: {
+      type: String
+    },
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
+  
+
+    toilets: [{ type: Schema.Types.ObjectId, ref: "Toilet" }]
+
+    //favourites
   },
+   
   {
-    // this second object adds extra properties: `createdAt` and `updatedAt`
     timestamps: true,
   }
 );
