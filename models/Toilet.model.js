@@ -27,15 +27,13 @@ const toiletSchema = new Schema({
     imageUrl: String,
     creator: { type: Schema.Types.ObjectId, ref: "User" },
     comments: [{ type: Schema.Types.ObjectId, ref: "Comment"}]
- // Location: [Number]
 
-    // OpeningTimes: String,
-
-   
-            
-        
-    
       
-});
+},
+{
+    // this second object adds extra properties: `createdAt` and `updatedAt`
+    timestamps: true,
+  }
+);
 
 module.exports = model("Toilet", toiletSchema);
