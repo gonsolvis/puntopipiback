@@ -80,8 +80,8 @@ router.get("/:idToilet", (req, res, next) => {
 
 router.put("/edit/:idToilet",  (req, res, next) => {
     const { idToilet } = req.params;
-    const { title, description, rating, imageUrl } = req.body;
-    Toilet.findByIdAndUpdate(idToilet, {title, description, rating, imageUrl, timestamps, clean}, {new: true})
+    const { title, description, rating, imageUrl, clean, creator } = req.body;
+    Toilet.findByIdAndUpdate(idToilet, {title, description, rating, imageUrl, clean, creator}, {new: true})
     .then(result => {
         res.json(result);
     })

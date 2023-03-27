@@ -1,8 +1,9 @@
-# fly.toml file generated for twilight-morning-8315 on 2023-03-16T20:19:42+01:00
+# fly.toml file generated for lingering-dust-323 on 2023-03-17T11:08:42+01:00
 
-app = "twilight-morning-8315"
+app = "lingering-dust-323"
 kill_signal = "SIGINT"
 kill_timeout = 5
+primary_region = "mad"
 processes = []
 
 [env]
