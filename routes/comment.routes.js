@@ -10,15 +10,15 @@ const fileUploader = require("../config/cloudinary.config");
 
 
 
-router.get("/:idToilet", (req, res, next) => {
-    const { idToilet } = req.params;
-    Toilet.findById(idToilet)
-    .populate("comments")
-    .then(response => {
-        res.json(response);
-    })
-    .catch(err => next(err))
-});
+// router.get("/:idToilet", (req, res, next) => {
+//     const { idToilet } = req.params;
+//     Toilet.findById(idToilet)
+//     .populate("comments")
+//     .then(response => {
+//         res.json(response);
+//     })
+//     .catch(err => next(err))
+// });
 
 //HOW TO POPULATE, THE ID?
 router.post("/new",  (req, res, next) => {
